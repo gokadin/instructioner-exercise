@@ -10,7 +10,9 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:
-  imageName: 'exercise:$(build.buildId)'
+  - group: 'registry'
+  - name: 'imageName'
+    value: 'exercise:$(build.buildId)'
 
 steps:
   - script: docker build -f Dockerfile -t $(registry)/$(registryId)/$(imageName) .
