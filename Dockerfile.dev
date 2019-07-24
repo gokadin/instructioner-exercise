@@ -1,0 +1,9 @@
+FROM golang:1.12
+
+RUN ["go", "get", "github.com/pilu/fresh"]
+RUN ["go", "get", "github.com/derekparker/delve/cmd/dlv"]
+
+WORKDIR /app
+
+# CMD fresh
+CMD ["go", "run", "main.go"]

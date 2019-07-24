@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  simulator:
+    image: camera-simulator
+    container_name: camera-simulator
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+    - APP_ENV=Development
+    - STREAM_LOCATION=localhost
+    ports:
+    - 17000:17000
+    - 4530:4530
+    - 2345:2345
+    security_opt:
+    - "seccomp:unconfined"
+    volumes:
+    - ./:/app
+    command: /go/bin/dlv debug --headless --log --listen=:2345 --api-version=2 --accept-multiclient
+    depends_on:
+    - simulator-mongo
+
+  simulator-mongo:
+    image: mongo
+    container_name: simulator-mongo
+    ports:
+    - 27017:27017
