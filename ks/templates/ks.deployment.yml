@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: exercise
+  name: {{ .Values.service.name }}
 spec:
   replicas: 1
   strategy:
@@ -12,15 +12,15 @@ spec:
   template:
     metadata:
       labels:
-        app: exercise
+        app: {{ .Values.service.name }}
     spec:
       containers:
-        - name: exercise
-          image: repo.treescale.com/godikadze/exercise:latest
+        - name: {{ .Values.service.name }}
+          image: repo.treescale.com/godikadze/{{ .Values.service.name }}:latest
           imagePullPolicy: Always
           ports:
             - name: http
-              containerPort: 17000
+              containerPort: {{ .Values.service.containerPort }}
           resources:
             requests:
               cpu: 150m
@@ -28,20 +28,3 @@ spec:
               cpu: 300m
       imagePullSecrets:
         - name: treescale-auth
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: exercise
-  labels:
-    app: exercise
-spec:
-  type: LoadBalancer
-  ports:
-    - name: http
-      port: 80
-      targetPort: 17000
-  selector:
-    app: exercise
