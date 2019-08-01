@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.service.name }}
-          image: repo.treescale.com/godikadze/{{ .Values.service.name }}:latest
+          image: repo.treescale.com/godikadze/{{ .Values.service.name }}:{{ .Values.image.tag }}
           imagePullPolicy: Always
           ports:
             - name: http
