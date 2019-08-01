@@ -30,14 +30,3 @@ steps:
     inputs:
       pathtoPublish: $(Build.ArtifactStagingDirectory)
       artifactName: drop
-  - task: HelmDeploy@0
-    displayName: 'helm upgrade'
-    inputs:
-      connectionType: 'Kubernetes Service Connection'
-      kubernetesServiceConnection: digitalocean
-      namespace: dev
-      command: upgrade
-      chartType: FilePath
-      chartPath: '$(System.DefaultWorkingDirectory)/gokadin.exercise/drop/ks'
-      releaseName: exercise
-      overrideValues: 'image.tag=$(Build.BuildId)'
