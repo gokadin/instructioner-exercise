@@ -34,7 +34,7 @@ func connectToMongoDB() *mgo.Session {
     switch os.Getenv("APP_ENV") {
     default:
         mongoDialInfo = &mgo.DialInfo{
-            Addrs:    []string{"exercise-mongo:27017"},
+            Addrs:    []string{"exercise-db-mongodb.dev.svc.cluster.local:27017"},
             Timeout:  5 * time.Second,
             Database: "simulator",
         }
