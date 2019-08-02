@@ -21,6 +21,9 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.service.containerPort }}
+          env:
+            - name: ENV
+              value: "production"
           resources:
             requests:
               cpu: 150m

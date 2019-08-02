@@ -1,0 +1,6 @@
+{
+  "mongodbHostname": "exercise-db-mongodb.dev",
+  "mongodbPort": 27017,
+  "eventstoreHostname": "eventstore-cluster",
+  "eventstorePort": 2113
+}

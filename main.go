@@ -1,10 +1,13 @@
 package main
 
 import (
+    "exercise/config"
     "exercise/controllers/exercise"
     "fmt"
+    "github.com/jetbasrawi/go.geteventstore"
     "github.com/labstack/echo"
     "github.com/labstack/gommon/log"
+    "github.com/tkanos/gonfig"
     "gopkg.in/mgo.v2"
     "os"
     "time"
@@ -15,26 +18,47 @@ const (
 )
 
 func main() {
-    _ = os.Setenv("TZ", "America/Montreal")
+	initialize()
+	
+	configuration := getConfiguration()
+
+    mongo := connectToMongoDB(configuration)
+    _ = mongo
+    
+    eventstore := connectToEventstore(configuration)
+    _ = eventstore
 
     app := echo.New()
-
-    mongo := connectToMongoDB()
-    _ = mongo
-
-    exerciseController := exercise.NewExerciseController()
-    apiAuth := app.Group("exercise")
-    apiAuth.GET("/", exerciseController.GetExercises)
-
+    setUpRoutes(app)
     log.Fatal(app.Start(fmt.Sprint(":", httpPort)))
 }
 
-func connectToMongoDB() *mgo.Session {
+func initialize() {
+    _ = os.Setenv("TZ", "America/Montreal")
+}
+
+func getConfiguration() *config.Configuration {
+    configuration := &config.Configuration{}
+    env := os.Getenv("ENV")
+    if len(env) == 0 {
+        env = "development"
+    }
+    
+    err := gonfig.GetConf(fmt.Sprintf("config/config.%s.json", env), configuration)
+    if err != nil {
+        log.Fatal("Could not get configuration.")
+        os.Exit(500)
+    }
+    
+    return configuration
+}
+
+func connectToMongoDB(config *config.Configuration) *mgo.Session {
     var mongoDialInfo *mgo.DialInfo
     switch os.Getenv("APP_ENV") {
     default:
         mongoDialInfo = &mgo.DialInfo{
-            Addrs:    []string{"exercise-db-mongodb.dev:27017"},
+            Addrs:    []string{fmt.Sprintf("%s:%d", config.MongodbHostname, config.MongodbPort)},
             Timeout:  5 * time.Second,
             Database: "simulator",
         }
@@ -43,7 +67,24 @@ func connectToMongoDB() *mgo.Session {
     mongoSession, err := mgo.DialWithInfo(mongoDialInfo)
     if err != nil {
         log.Fatal("Could not open MongDB connection: ", err)
+        os.Exit(500)
     }
 
     return mongoSession
+}
+
+func connectToEventstore(config *config.Configuration) *goes.Client {
+    client, err := goes.NewClient(nil, fmt.Sprintf("http://%s:%d", config.EventstoreHostname, config.EventstorePort))
+    if err != nil {
+        log.Fatal(err)
+        os.Exit(500)
+    }
+    
+    return client
+}
+
+func setUpRoutes(app *echo.Echo) {
+    exerciseController := exercise.NewExerciseController()
+    apiAuth := app.Group("exercise")
+    apiAuth.GET("/", exerciseController.GetExercises)
 }
