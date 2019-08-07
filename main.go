@@ -1,8 +1,8 @@
 package main
 
 import (
+    "exercise/app/exercise"
     "exercise/config"
-    "exercise/controllers/exercise"
     "fmt"
     "github.com/jetbasrawi/go.geteventstore"
     "github.com/labstack/echo"
@@ -23,13 +23,12 @@ func main() {
 	configuration := getConfiguration()
 
     mongo := connectToMongoDB(configuration)
-    _ = mongo
     
     eventstore := connectToEventstore(configuration)
     _ = eventstore
 
     app := echo.New()
-    setUpRoutes(app)
+    setUpRoutes(app, mongo)
     log.Fatal(app.Start(fmt.Sprint(":", httpPort)))
 }
 
@@ -83,8 +82,9 @@ func connectToEventstore(config *config.Configuration) *goes.Client {
     return client
 }
 
-func setUpRoutes(app *echo.Echo) {
-    exerciseController := exercise.NewExerciseController()
+func setUpRoutes(app *echo.Echo, mongo *mgo.Session) {
+    exerciseController := exercise.NewController(mongo)
     apiAuth := app.Group("exercise")
-    apiAuth.GET("/", exerciseController.GetExercises)
+    apiAuth.GET("", exerciseController.GetExercises)
+    apiAuth.POST("/create", exerciseController.Create)
 }

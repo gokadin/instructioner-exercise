@@ -6,6 +6,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/jetbasrawi/go.geteventstore v1.0.0
 	github.com/jetbasrawi/go.geteventstore.testfeed v0.0.0-20160808110805-4e3be493c211 // indirect
+	github.com/knetic/govaluate v3.0.0+incompatible
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.2.9

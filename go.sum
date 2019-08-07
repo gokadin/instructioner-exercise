@@ -8,6 +8,8 @@ github.com/jetbasrawi/go.geteventstore v1.0.0 h1:eRICKjH59qET0lQG5pOPllWgLiOLdeL
 github.com/jetbasrawi/go.geteventstore v1.0.0/go.mod h1:lEkGcCQHpZLkhgu7OEMyNnl65l7K9NoaOeQljpTRaek=
 github.com/jetbasrawi/go.geteventstore.testfeed v0.0.0-20160808110805-4e3be493c211 h1:HtXdY6vd2Th6bQQxxzpVJznZPRyYD+lIPPvf5i8cV+A=
 github.com/jetbasrawi/go.geteventstore.testfeed v0.0.0-20160808110805-4e3be493c211/go.mod h1:Nut6E2/rQQ1PF+alpAJ2nckmkjshphzVNETz1XxE/CI=
+github.com/knetic/govaluate v3.0.0+incompatible h1:wtCEE87YYq68awKAV9kYkNDvxS7MDzO3ABbKgDqO+tI=
+github.com/knetic/govaluate v3.0.0+incompatible/go.mod h1:7QMc3skGbZuD4ZSe6bVN885uWCaxvhpo1Fvwvgp7bF8=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
